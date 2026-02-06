@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Track your family's expenses together. Get insights into spending patterns and identify anomalies." />
+  <meta name="theme-color" content="#2563eb" />
+  
+  <title>Family Expense Tracker</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  
+  <!-- Preconnect to Firebase -->
+  <link rel="preconnect" href="https://firestore.googleapis.com" />
+  <link rel="preconnect" href="https://identitytoolkit.googleapis.com" />
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="/src/styles/global.css" />
+</head>
+<body>
+  <div id="app">
+    <app-shell></app-shell>
+  </div>
+  
+  <noscript>
+    <div style="padding: 2rem; text-align: center; font-family: system-ui, sans-serif;">
+      <h1>JavaScript Required</h1>
+      <p>Please enable JavaScript to use Family Expense Tracker.</p>
+    </div>
+  </noscript>
+  
+  <script type="module" src="/src/app.ts"></script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Helper function to check if user owns the document
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+    
+    // Helper function to check if user is a family member
+    function isFamilyMember(familyId) {
+      return isAuthenticated() && 
+        request.auth.uid in get(/databases/$(database)/documents/$(getEnvPath())/families/$(familyId)).data.members;
+    }
+    
+    // Helper function to get environment path prefix
+    function getEnvPath() {
+      // This will be 'environments/production' or 'environments/preview' in non-local envs
+      // For local development with emulators, this returns empty string
+      return '';
+    }
+    
+    // ================================
+    // Root level rules (for local development with emulators)
+    // ================================
+    
+    // Users collection
+    match /users/{userId} {
+      allow read: if isAuthenticated() && isOwner(userId);
+      allow create: if isAuthenticated() && isOwner(userId);
+      allow update: if isAuthenticated() && isOwner(userId);
+      allow delete: if false; // Users cannot delete their own accounts
+    }
+    
+    // Families collection
+    match /families/{familyId} {
+      allow read: if isAuthenticated() && 
+        request.auth.uid in resource.data.members;
+      allow create: if isAuthenticated();
+      allow update: if isAuthenticated() && 
+        request.auth.uid in resource.data.members;
+      allow delete: if isAuthenticated() && 
+        request.auth.uid == resource.data.createdBy;
+    }
+    
+    // Expenses collection
+    match /expenses/{expenseId} {
+      allow read: if isAuthenticated() && 
+        request.auth.uid in get(/databases/$(database)/documents/families/$(resource.data.familyId)).data.members;
+      allow create: if isAuthenticated();
+      allow update: if isAuthenticated() && 
+        (request.auth.uid == resource.data.paidBy || 
+         request.auth.uid in get(/databases/$(database)/documents/families/$(resource.data.familyId)).data.members);
+      allow delete: if isAuthenticated() && 
+        request.auth.uid == resource.data.paidBy;
+    }
+    
+    // Invites collection
+    match /invites/{inviteId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update: if isAuthenticated();
+      allow delete: if false;
+    }
+    
+    // ================================
+    // Environment-scoped rules (for preview/production)
+    // ================================
+    
+    match /environments/{environment}/{document=**} {
+      // Users
+      match /users/{userId} {
+        allow read: if isAuthenticated() && isOwner(userId);
+        allow create: if isAuthenticated() && isOwner(userId);
+        allow update: if isAuthenticated() && isOwner(userId);
+        allow delete: if false;
+      }
+      
+      // Families
+      match /families/{familyId} {
+        allow read: if isAuthenticated() && 
+          request.auth.uid in resource.data.members;
+        allow create: if isAuthenticated();
+        allow update: if isAuthenticated() && 
+          request.auth.uid in resource.data.members;
+        allow delete: if isAuthenticated() && 
+          request.auth.uid == resource.data.createdBy;
+      }
+      
+      // Expenses
+      match /expenses/{expenseId} {
+        allow read: if isAuthenticated() && 
+          request.auth.uid in get(/databases/$(database)/documents/environments/$(environment)/families/$(resource.data.familyId)).data.members;
+        allow create: if isAuthenticated();
+        allow update: if isAuthenticated() && 
+          (request.auth.uid == resource.data.paidBy || 
+           request.auth.uid in get(/databases/$(database)/documents/environments/$(environment)/families/$(resource.data.familyId)).data.members);
+        allow delete: if isAuthenticated() && 
+          request.auth.uid == resource.data.paidBy;
+      }
+      
+      // Invites
+      match /invites/{inviteId} {
+        allow read: if isAuthenticated();
+        allow create: if isAuthenticated();
+        allow update: if isAuthenticated();
+        allow delete: if false;
+      }
+    }
+  }
+}
