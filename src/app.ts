@@ -20,7 +20,10 @@ import './components/auth/login-page';
 import './components/auth/signup-page';
 import './components/layout/app-header';
 import './components/layout/app-sidebar';
+import './components/layout/mobile-bottom-bar';
 import './components/shared/loading-spinner';
+import './components/shared/app-icon';
+import './components/family/family-page';
 
 @customElement('app-shell')
 export class AppShell extends LitElement {
@@ -93,6 +96,7 @@ export class AppShell extends LitElement {
 
       .main-content {
         padding: var(--spacing-4);
+        padding-bottom: calc(var(--spacing-4) + 80px); /* Space for bottom bar */
       }
     }
   `;
@@ -225,6 +229,12 @@ export class AppShell extends LitElement {
 
           <main class="main-content">${this.renderCurrentPage()}</main>
         </div>
+
+        <!-- Mobile Bottom Navigation -->
+        <mobile-bottom-bar
+          .currentRoute=${this.currentRoute}
+          @navigate=${this.handleNavigate}
+        ></mobile-bottom-bar>
       </div>
 
       ${env !== 'production'
@@ -249,7 +259,13 @@ export class AppShell extends LitElement {
         return html`<h1>Add Expense</h1>`;
 
       case 'family':
-        return html`<h1>Family</h1>`;
+        return html`
+          <family-page
+            .user=${this.currentUser}
+            .selectedFamilyId=${this.selectedFamilyId}
+            @family-select=${this.handleFamilySelect}
+          ></family-page>
+        `;
 
       case 'settings':
         return html`<h1>Settings</h1>`;

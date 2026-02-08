@@ -8,11 +8,13 @@ import { LitElement, html, css } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { getUserFamilies } from '@/services';
 import type { User, Family, AppRoute } from '@/types';
+import type { IconName } from '../shared/app-icon';
+import '../shared/app-icon';
 
 interface NavItem {
   route: AppRoute;
   label: string;
-  icon: string;
+  icon: IconName;
 }
 
 @customElement('app-sidebar')
@@ -153,9 +155,11 @@ export class AppSidebar extends LitElement {
     }
 
     .nav-icon {
-      font-size: var(--font-size-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       width: 24px;
-      text-align: center;
+      color: inherit;
     }
 
     /* Footer */
@@ -196,14 +200,14 @@ export class AppSidebar extends LitElement {
   @state() private isLoadingFamilies = true;
 
   private navItems: NavItem[] = [
-    { route: 'dashboard', label: 'Dashboard', icon: '📊' },
-    { route: 'expenses', label: 'Expenses', icon: '💳' },
-    { route: 'add-expense', label: 'Add Expense', icon: '➕' },
+    { route: 'dashboard', label: 'Dashboard', icon: 'dashboard' },
+    { route: 'expenses', label: 'Expenses', icon: 'expenses' },
+    { route: 'add-expense', label: 'Add Expense', icon: 'plus-circle' },
   ];
 
   private settingsItems: NavItem[] = [
-    { route: 'family', label: 'Family', icon: '👨‍👩‍👧‍👦' },
-    { route: 'settings', label: 'Settings', icon: '⚙️' },
+    { route: 'family', label: 'Family', icon: 'users' },
+    { route: 'settings', label: 'Settings', icon: 'settings' },
   ];
 
   connectedCallback() {
@@ -291,7 +295,13 @@ export class AppSidebar extends LitElement {
                     class="nav-link ${this.currentRoute === item.route ? 'active' : ''}"
                     @click=${() => this.handleNavClick(item.route)}
                   >
-                    <span class="nav-icon">${item.icon}</span>
+                    <span class="nav-icon">
+                      <app-icon 
+                        name=${item.icon} 
+                        size=${20}
+                        .strokeWidth=${this.currentRoute === item.route ? 2 : 1.5}
+                      ></app-icon>
+                    </span>
                     <span>${item.label}</span>
                   </a>
                 </li>
@@ -308,7 +318,13 @@ export class AppSidebar extends LitElement {
                     class="nav-link ${this.currentRoute === item.route ? 'active' : ''}"
                     @click=${() => this.handleNavClick(item.route)}
                   >
-                    <span class="nav-icon">${item.icon}</span>
+                    <span class="nav-icon">
+                      <app-icon 
+                        name=${item.icon} 
+                        size=${20}
+                        .strokeWidth=${this.currentRoute === item.route ? 2 : 1.5}
+                      ></app-icon>
+                    </span>
                     <span>${item.label}</span>
                   </a>
                 </li>
@@ -321,7 +337,7 @@ export class AppSidebar extends LitElement {
         ${this.families.length > 0 ? html`
           <div class="sidebar-footer">
             <button class="invite-btn" @click=${this.handleInvite}>
-              <span>✉️</span>
+              <app-icon name="invite" size=${18}></app-icon>
               <span>Invite Family Member</span>
             </button>
           </div>

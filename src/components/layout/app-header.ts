@@ -8,6 +8,7 @@ import { LitElement, html, css } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { logout } from '@/services';
 import type { User } from '@/types';
+import '../shared/app-icon';
 
 @customElement('app-header')
 export class AppHeader extends LitElement {
@@ -33,7 +34,14 @@ export class AppHeader extends LitElement {
     }
 
     .logo-icon {
-      font-size: var(--font-size-2xl);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-600));
+      border-radius: var(--radius-lg);
+      color: white;
     }
 
     .logo-text {
@@ -85,6 +93,9 @@ export class AppHeader extends LitElement {
     }
 
     .logout-btn {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
       padding: var(--spacing-2) var(--spacing-4);
       font-size: var(--font-size-sm);
       font-weight: var(--font-weight-medium);
@@ -110,6 +121,14 @@ export class AppHeader extends LitElement {
 
       .user-name {
         display: none;
+      }
+
+      .logout-btn span {
+        display: none;
+      }
+
+      .logout-btn {
+        padding: var(--spacing-2);
       }
     }
   `;
@@ -146,7 +165,9 @@ export class AppHeader extends LitElement {
     return html`
       <header>
         <div class="logo">
-          <span class="logo-icon">💰</span>
+          <div class="logo-icon">
+            <app-icon name="dollar" size=${20} strokeWidth=${2}></app-icon>
+          </div>
           <span class="logo-text">Family <span>Expenses</span></span>
         </div>
 
@@ -166,7 +187,8 @@ export class AppHeader extends LitElement {
             @click=${this.handleLogout}
             ?disabled=${this.isLoggingOut}
           >
-            ${this.isLoggingOut ? 'Logging out...' : 'Log Out'}
+            <app-icon name="logout" size=${18}></app-icon>
+            <span>${this.isLoggingOut ? 'Logging out...' : 'Log Out'}</span>
           </button>
         </div>
       </header>
