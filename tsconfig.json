@@ -1,29 +1,31 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
-    "useDefineForClassFields": true,
-    "module": "ESNext",
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "skipLibCheck": true,
+    /* Language and Environment */
+    "target": "ES2022", // Compile to ES2022 (modern JS with good browser support)
+    "lib": ["ES2022", "DOM", "DOM.Iterable"], // Include type definitions for ES2022, DOM APIs
+    "experimentalDecorators": true, // Enable decorators (@customElement, @property, @state)
+    "useDefineForClassFields": false, // IMPORTANT: Must be false for Lit decorators to work correctly
 
-    /* Bundler mode */
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
+    /* Modules */
+    "module": "ESNext", // Use latest ES module syntax
+    "moduleResolution": "bundler", // Use bundler resolution (Vite-friendly)
+    "resolveJsonModule": true, // Allow importing .json files
 
-    /* Linting */
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
+    /* Emit */
+    "noEmit": true, // Don't emit JS (Vite handles compilation)
 
-    /* Decorators for Lit */
-    "experimentalDecorators": true,
-    "useDefineForClassFields": false,
+    /* Interop Constraints */
+    "isolatedModules": true, // Ensure each file can be safely transpiled independently
+    "allowImportingTsExtensions": true, // Allow importing .ts files (Vite strips extensions)
+    "skipLibCheck": true, // Skip type checking of declaration files (faster builds)
 
-    /* Paths */
+    /* Type Checking */
+    "strict": true, // Enable all strict type-checking options
+    "noUnusedLocals": true, // Error on unused local variables
+    "noUnusedParameters": true, // Error on unused function parameters
+    "noFallthroughCasesInSwitch": true, // Error on fallthrough cases in switch statements
+
+    /* Path Mapping */
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
