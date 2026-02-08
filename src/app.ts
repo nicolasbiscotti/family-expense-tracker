@@ -1,6 +1,6 @@
 /**
  * Main App Shell
- * 
+ *
  * Root component that handles:
  * - Firebase initialization
  * - Authentication state
@@ -132,7 +132,7 @@ export class AppShell extends LitElement {
           if (this.currentRoute === 'login' || this.currentRoute === 'signup') {
             this.navigateTo('dashboard');
           }
-          
+
           // Select first family if available
           if (user.families.length > 0 && !this.selectedFamilyId) {
             this.selectedFamilyId = user.families[0];
@@ -189,9 +189,9 @@ export class AppShell extends LitElement {
         <div class="loading-container">
           <loading-spinner size="large"></loading-spinner>
         </div>
-        ${env !== 'production' ? html`
-          <div class="env-badge ${env}">${env.toUpperCase()}</div>
-        ` : ''}
+        ${env !== 'production'
+          ? html` <div class="env-badge ${env}">${env.toUpperCase()}</div> `
+          : ''}
       `;
     }
 
@@ -201,22 +201,18 @@ export class AppShell extends LitElement {
         <div class="auth-container">
           ${this.currentRoute === 'signup'
             ? html`<signup-page @navigate=${this.handleNavigate}></signup-page>`
-            : html`<login-page @navigate=${this.handleNavigate}></login-page>`
-          }
+            : html`<login-page @navigate=${this.handleNavigate}></login-page>`}
         </div>
-        ${env !== 'production' ? html`
-          <div class="env-badge ${env}">${env.toUpperCase()}</div>
-        ` : ''}
+        ${env !== 'production'
+          ? html` <div class="env-badge ${env}">${env.toUpperCase()}</div> `
+          : ''}
       `;
     }
 
     // Authenticated - show main app
     return html`
       <div class="app-container">
-        <app-header
-          .user=${this.currentUser}
-          @logout=${this.handleLogout}
-        ></app-header>
+        <app-header .user=${this.currentUser} @logout=${this.handleLogout}></app-header>
 
         <div class="app-content">
           <app-sidebar
@@ -227,15 +223,13 @@ export class AppShell extends LitElement {
             @family-select=${this.handleFamilySelect}
           ></app-sidebar>
 
-          <main class="main-content">
-            ${this.renderCurrentPage()}
-          </main>
+          <main class="main-content">${this.renderCurrentPage()}</main>
         </div>
       </div>
 
-      ${env !== 'production' ? html`
-        <div class="env-badge ${env}">${env.toUpperCase()}</div>
-      ` : ''}
+      ${env !== 'production'
+        ? html` <div class="env-badge ${env}">${env.toUpperCase()}</div> `
+        : ''}
     `;
   }
 
@@ -247,19 +241,19 @@ export class AppShell extends LitElement {
           <p>Welcome, ${this.currentUser?.displayName}!</p>
           <p>Selected Family: ${this.selectedFamilyId || 'None'}</p>
         `;
-      
+
       case 'expenses':
         return html`<h1>Expenses</h1>`;
-      
+
       case 'add-expense':
         return html`<h1>Add Expense</h1>`;
-      
+
       case 'family':
         return html`<h1>Family</h1>`;
-      
+
       case 'settings':
         return html`<h1>Settings</h1>`;
-      
+
       default:
         return html`<h1>Page Not Found</h1>`;
     }
