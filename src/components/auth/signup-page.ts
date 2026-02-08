@@ -1,6 +1,6 @@
 /**
  * Signup Page Component
- * 
+ *
  * Handles new user registration with email/password
  */
 
@@ -56,11 +56,14 @@ export class SignupPage extends LitElement {
 
     input {
       width: 100%;
+      box-sizing: border-box;
       padding: var(--spacing-3) var(--spacing-4);
       border: 1px solid var(--color-border);
       border-radius: var(--radius-md);
       font-size: var(--font-size-base);
-      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+      transition:
+        border-color var(--transition-fast),
+        box-shadow var(--transition-fast);
     }
 
     input:focus {
@@ -162,7 +165,9 @@ export class SignupPage extends LitElement {
     }
 
     @keyframes spin {
-      to { transform: rotate(360deg); }
+      to {
+        transform: rotate(360deg);
+      }
     }
 
     .terms {
@@ -269,11 +274,13 @@ export class SignupPage extends LitElement {
   }
 
   private navigateToLogin() {
-    this.dispatchEvent(new CustomEvent<{ route: AppRoute }>('navigate', {
-      detail: { route: 'login' },
-      bubbles: true,
-      composed: true,
-    }));
+    this.dispatchEvent(
+      new CustomEvent<{ route: AppRoute }>('navigate', {
+        detail: { route: 'login' },
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 
   protected render() {
@@ -297,9 +304,9 @@ export class SignupPage extends LitElement {
               ?disabled=${this.isLoading}
               autocomplete="name"
             />
-            ${this.fieldErrors.displayName ? html`
-              <p class="field-error">${this.fieldErrors.displayName}</p>
-            ` : ''}
+            ${this.fieldErrors.displayName
+              ? html` <p class="field-error">${this.fieldErrors.displayName}</p> `
+              : ''}
           </div>
 
           <div class="form-group">
@@ -314,9 +321,9 @@ export class SignupPage extends LitElement {
               ?disabled=${this.isLoading}
               autocomplete="email"
             />
-            ${this.fieldErrors.email ? html`
-              <p class="field-error">${this.fieldErrors.email}</p>
-            ` : ''}
+            ${this.fieldErrors.email
+              ? html` <p class="field-error">${this.fieldErrors.email}</p> `
+              : ''}
           </div>
 
           <div class="form-group">
@@ -331,11 +338,9 @@ export class SignupPage extends LitElement {
               ?disabled=${this.isLoading}
               autocomplete="new-password"
             />
-            ${this.fieldErrors.password ? html`
-              <p class="field-error">${this.fieldErrors.password}</p>
-            ` : html`
-              <p class="field-hint">At least 6 characters</p>
-            `}
+            ${this.fieldErrors.password
+              ? html` <p class="field-error">${this.fieldErrors.password}</p> `
+              : html` <p class="field-hint">At least 6 characters</p> `}
           </div>
 
           <div class="form-group">
@@ -350,21 +355,20 @@ export class SignupPage extends LitElement {
               ?disabled=${this.isLoading}
               autocomplete="new-password"
             />
-            ${this.fieldErrors.confirmPassword ? html`
-              <p class="field-error">${this.fieldErrors.confirmPassword}</p>
-            ` : ''}
+            ${this.fieldErrors.confirmPassword
+              ? html` <p class="field-error">${this.fieldErrors.confirmPassword}</p> `
+              : ''}
           </div>
 
-          ${this.error ? html`
-            <p class="error-message">${this.error}</p>
-          ` : ''}
+          ${this.error ? html` <p class="error-message">${this.error}</p> ` : ''}
 
           <button type="submit" class="submit-btn" ?disabled=${this.isLoading}>
             ${this.isLoading ? html`<div class="spinner"></div>` : 'Create Account'}
           </button>
 
           <p class="terms">
-            By signing up, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+            By signing up, you agree to our <a href="#">Terms of Service</a> and
+            <a href="#">Privacy Policy</a>
           </p>
         </form>
 

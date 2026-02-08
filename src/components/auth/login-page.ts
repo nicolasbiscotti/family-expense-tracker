@@ -1,6 +1,6 @@
 /**
  * Login Page Component
- * 
+ *
  * Handles user authentication with email/password
  */
 
@@ -55,11 +55,14 @@ export class LoginPage extends LitElement {
 
     input {
       width: 100%;
+      box-sizing: border-box;
       padding: var(--spacing-3) var(--spacing-4);
       border: 1px solid var(--color-border);
       border-radius: var(--radius-md);
       font-size: var(--font-size-base);
-      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+      transition:
+        border-color var(--transition-fast),
+        box-shadow var(--transition-fast);
     }
 
     input:focus {
@@ -171,7 +174,9 @@ export class LoginPage extends LitElement {
     }
 
     @keyframes spin {
-      to { transform: rotate(360deg); }
+      to {
+        transform: rotate(360deg);
+      }
     }
   `;
 
@@ -195,7 +200,7 @@ export class LoginPage extends LitElement {
 
   private async handleSubmit(e: Event) {
     e.preventDefault();
-    
+
     if (!this.email || !this.password) {
       this.error = 'Please enter both email and password';
       return;
@@ -230,11 +235,13 @@ export class LoginPage extends LitElement {
   }
 
   private navigateToSignup() {
-    this.dispatchEvent(new CustomEvent<{ route: AppRoute }>('navigate', {
-      detail: { route: 'signup' },
-      bubbles: true,
-      composed: true,
-    }));
+    this.dispatchEvent(
+      new CustomEvent<{ route: AppRoute }>('navigate', {
+        detail: { route: 'signup' },
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 
   protected render() {
@@ -277,13 +284,10 @@ export class LoginPage extends LitElement {
             </div>
           </div>
 
-          ${this.error ? html`
-            <p class="error-message">${this.error}</p>
-          ` : ''}
-
-          ${this.successMessage ? html`
-            <p class="success-message">${this.successMessage}</p>
-          ` : ''}
+          ${this.error ? html` <p class="error-message">${this.error}</p> ` : ''}
+          ${this.successMessage
+            ? html` <p class="success-message">${this.successMessage}</p> `
+            : ''}
 
           <button type="submit" class="submit-btn" ?disabled=${this.isLoading}>
             ${this.isLoading ? html`<div class="spinner"></div>` : 'Log In'}
